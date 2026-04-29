@@ -1,0 +1,5 @@
+Between August 2020 and July 2023, the central Sahel saw one of the post-Cold War's most concentrated coup waves [Powell & Thyne 2011]. Mali (twice), Burkina Faso (twice), and Niger replaced civilian governments with military juntas, pivoting to Russian partners — first Wagner, then Africa Corps [Marten 2023; McCullough & Sandor 2023]. The conventional read is geopolitical. The more basic question is who is now killing whom.
+
+
+
+ACLED records for Western Africa (2018-01-01 to 2025-04-25) [Raleigh et al. 2010] frame the question: **Did Russian deployment into the AES core coincide with a major shift in who is targeting civilians, distinct from the ongoing jihadist insurgency?** We distinguish state forces, external forces, and non-state armed groups pre- and post-Russian arrival. Two robustness checks follow: a placebo (re-fit on West African countries without Russian forces) and a breakpoint test (anchored to French withdrawal instead of Russian arrival). We test whether post-coup violence reflects *jihadist resurgence* or *state-led victimization*.

@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+*.egg-info/
+
+# Jupyter
+.jupyter/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Reproducibility scratch
+*.tmp
+*.bak
+code/_*.py
+
+# ACLED raw data — NOT redistributed (license + size). Download your own export
+# from https://acleddata.com/data-export-tool/ as instructed in README.md.
+data/acled_raw.csv
+
+# We DO commit data/acled_clean*.parquet, data/aes_*.parquet, data/final_stats.json,
+# the report HTML in docs/, and the figures in docs/figs/ — these are deliverables.
