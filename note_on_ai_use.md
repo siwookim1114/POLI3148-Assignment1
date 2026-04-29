@@ -1,12 +1,12 @@
 # Note on AI Use
 
-**Author:** Si Woo Kim · **Course:** POLI3148 (Spring 2026, HKU) · **Assignment 1**
+**Author:** Si Woo Kim · **Course:** POLI3148 · **Assignment 1**
 
 This note documents how AI was used in producing this assignment.
 
 ## Tool
 
-I used an AI assistant throughout this project to support research, analysis, and writing tasks across the pipeline.
+I used **Claude Code** (Anthropic) with a multi-agent specialist setup spanning idea brainstorming, data retrieval, data cleaning, data visualization, data analysis, report generation, copy-editing, and other tasks.
 
 ## Phase-by-phase
 
@@ -22,6 +22,3 @@ For drafting, I directed and reviewed every paragraph iteratively. I supplied th
 
 I verified all AI-generated code and figures by reviewing the outputs, double-checking values against the underlying data, and confirming that the analysis pipeline ran end-to-end and produced consistent results from the cleaned data through to the rendered report.
 
-## Responsibility
-
-The responsibility for the accuracy and integrity of this submission rests entirely with me. Where AI drafted prose, I directed and reviewed it. Where AI computed a statistic, the computation is reproducible from the public ACLED, Powell-Thyne, and V-Dem datasets and is documented in the analysis notebooks. Every claim, interpretation, and methodological choice in the final report is mine.

@@ -1,9 +1,9 @@
 # When the Counter-Insurgent Becomes the Killer
 ### Wagner, the AES Coup Belt, and the State-Led Civilian-Targeting Turn in the Sahel, 2018–2025
 
-**POLI3148 Assignment 1 — Si Woo Kim — Spring 2026 (HKU)**
+**POLI3148 Assignment 1 — Si Woo Kim — (HKU)**
 
-📊 **Live interactive report:** [siwookim1114.github.io/POLI3148-Assignment1](https://siwookim1114.github.io/POLI3148-Assignment1/)
+**Live interactive report:** [siwookim1114.github.io/POLI3148-Assignment1](https://siwookim1114.github.io/POLI3148-Assignment1/)
 
 Across Mali, Burkina Faso, and Niger — the three states that in 2024 formalized their breakaway as the *Alliance des États du Sahel* — the perpetrators of mass civilian killing have changed faster than the fighting itself. This project asks how, and how confidently, that turn can be read in the ACLED (Armed Conflict Location & Event Data) record between 2018 and 2025, using a breakdown of civilian-targeted fatalities by perpetrator type, a negative-binomial regression with three robustness specifications, a placebo on non-AES West Africa, V-Dem regime trajectories, and a three-method text analysis (TF-IDF, LDA topic modeling, VADER sentiment) of ACLED's event notes.
 
