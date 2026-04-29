@@ -13,7 +13,8 @@ Across Mali, Burkina Faso, and Niger — the three states that in 2024 formalize
 - The pooled negative-binomial estimate (country fixed effects, event-volume control, linear time trend) returns an **incidence-rate ratio (IRR) of 1.74 (95% CI 1.11–2.74, p = 0.017)** on 264 country-month observations. The result survives two robustness checks (NegativeBinomialP MLE that estimates α from the data, and cluster-robust standard errors at country level). The placebo on 13 non-AES West African countries returns IRR = 1.15 (p = 0.36, CI contains 1).
 - The Russian-arrival breakpoint (IRR = 1.74) outperforms the French-exit breakpoint (IRR = 1.48, p = 0.097), and 75% of the variance in monthly civilian-fatality counts lies *within* countries across time rather than between countries — confirming the change is regime-driven, not cross-country drift.
 - An admin1-level decomposition of Mali's events shows a southward shift: Mopti's share of civilian-targeted events drops from 0.54 to 0.31, while Ségou rises from 0.10 to 0.16 — independently corroborated by an unsupervised LDA topic model whose 'mopti-fulani' theme more than halves and 'fama-wagner-village' theme more than doubles post-Wagner.
-- Three independent text-analysis methods on ACLED's event notes (TF-IDF distinguishing words, VADER sentiment, LDA topics) converge on the same shift: post-Wagner notes name Wagner-era actors (wagner, fama, mercenaries, patrol) rather than the jihadist-faction names that distinguished pre-Wagner reporting, while sentiment stays flat (Δ = 0.02) — ruling out a reporting-volume artifact. A Random Forest classifier reaches 94% accuracy distinguishing the two phases from text alone (Logistic Regression baseline: 93%; majority-class baseline: 66%).
+- Three independent text-analysis methods on ACLED's event notes (TF-IDF distinguishing words, VADER sentiment, LDA topics) converge on the same shift: post-Wagner notes name Wagner-era actors (wagner, fama, mercenaries, patrol) rather than the jihadist-faction names that distinguished pre-Wagner reporting, while sentiment stays flat (Δ = 0.02) — ruling out a reporting-volume artifact.
+- A Random Forest classifier trained on note text alone reaches **94% accuracy** distinguishing pre- vs post-Wagner notes (Logistic Regression baseline: 93%; majority-class baseline: 66%) — confirming the textual signal is robust enough to be machine-detectable, not a cherry-picked artefact of any single text-analysis method.
 
 ## Folder structure
 
@@ -47,9 +48,9 @@ Across Mali, Burkina Faso, and Niger — the three states that in 2024 formalize
 
 ## Data sources
 
-- **ACLED** Data Export Tool, https://acleddata.com/data-export-tool/, retrieved 2026-04-25 (Western Africa region, 2018-01-01 to 2025-04-25, all event types).
-- **Powell-Thyne global coup dataset**, v2026.01.13, http://www.jonathanmpowell.com/coup-detat-dataset.html.
-- **V-Dem v16** (March 2026 release), https://v-dem.net/data/the-v-dem-dataset/, accessed via the `vdemdata` R package.
+- **ACLED (Armed Conflict Location & Event Data)** — event-level political-violence database covering protests, riots, battles, explosions, and violence against civilians, with date, location (lat/lon, admin1), perpetrator (actor1/actor2), event-type, sub-event-type, and reported fatalities for each incident. *Used for:* the dependent variable (civilian-targeted fatalities) and all perpetrator-role coding. *Filter:* Western Africa region, 2018-01-01 to 2025-04-25, all event types — yields 26,977 events across the AES core and 9,300 civilian-targeted events. Source: [ACLED Data Export Tool](https://acleddata.com/data-export-tool/), retrieved 2026-04-25.
+- **Powell-Thyne global coup dataset** (v2026.01.13) — registry of every coup attempt worldwide since 1950, coded as `successful` or `failed` with `coup_date`. *Used for:* identifying the first-coup breakpoints for Mali (2020-08-18), Burkina Faso (2022-01-23), and Niger (2023-07-26). Source: [Powell-Thyne dataset](http://www.jonathanmpowell.com/coup-detat-dataset.html).
+- **V-Dem v16 (March 2026 release)** — expert-coded democracy-indicators dataset providing the polyarchy index (`v2x_polyarchy`, electoral-democracy 0–1 scale) and a six-category regime-of-the-world classification per country-year. *Used for:* the political-context layer in Figure 4, documenting the AES core's post-coup regime trajectories. Source: [V-Dem dataset](https://v-dem.net/data/the-v-dem-dataset/), accessed via the `vdemdata` R package.
 
 ## Methodology overview
 
@@ -57,19 +58,17 @@ The analysis builds country-month panels of civilian-targeted fatalities by perp
 
 ## Limitations
 
-- ACLED is media-sourced and under-covers remote rural areas; Eck (2012) documents the bias formally.
-- Burkina Faso (15-month) and Niger (12-month) post-Wagner windows are short; their CIs are wider and they should not be over-interpreted.
-- The design is observational: even with the placebo's silence, association is not causation, and Wagner deployment may itself be partly a symptom of juntas selecting permissive partners.
-- All fatality counts are *reported* fatalities under ACLED's conservative-source-estimate convention, so they understate.
-
-## AI tools used
-
-See `note_on_ai_use.md`.
+- **ACLED is media-sourced and under-covers remote rural areas;** Eck (2012) documents the bias formally. The unchanged sentiment finding (Δ = 0.02) partially mitigates by ruling out a *change* in coverage tone, but a pre-existing level of under-reporting in junta-controlled rural Mopti and Ségou cannot be ruled out.
+- **Short post-Wagner windows for Burkina Faso (15-month) and Niger (12-month)** make their CIs wide and their per-country IRRs imprecise. Mali's 41-month post-window does the heavy lifting in the pooled estimate. Re-running the analysis once Burkina Faso and Niger accumulate 30+ post-deployment months will be the most informative robustness test.
+- **Observational design — endogenous selection.** Even with the placebo's silence, association is not causation. Wagner deployment may itself be partly a *symptom* of juntas selecting permissive partners (the "juntas choose Wagner because Wagner asks no questions" path), making Wagner a marker of regime intent rather than its independent cause.
+- **Small-N panel for cluster-robust standard errors.** With only 3 country clusters in the AES core, the cluster-robust standard errors should be read as a sensitivity check rather than a definitive correction; small-cluster asymptotic theory does not strictly apply.
+- **Text-analysis language coverage.** ACLED's `notes` field is English-only; French- and Arabic-language local reporting is excluded. The TF-IDF / VADER / LDA findings reflect the English-language source pool ACLED draws from, which may differentially over- or under-represent certain perpetrators.
+- **Generalizability beyond the Sahel.** The state-led civilian-targeting turn we document is specific to the AES core's particular configuration of jihadist insurgency + military junta + Russian PMC partnership; whether it generalizes to other PMC-deployment contexts (Central African Republic, Libya, Syria) is an open question this dataset does not adjudicate.
+- **Reported fatalities understate true death tolls.** ACLED's conservative-source-estimate convention records the lower number when sources disagree, so all fatality counts are floors, not point estimates.
 
 ## Author
 
 **Si Woo Kim**
-POLI3148 — *Data Science in Politics* — Spring 2026
 The University of Hong Kong (HKU)
 GitHub: [@siwookim1114](https://github.com/siwookim1114)
 Repository: [POLI3148-Assignment1](https://github.com/siwookim1114/POLI3148-Assignment1)
