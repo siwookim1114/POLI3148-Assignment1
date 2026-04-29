@@ -48,9 +48,11 @@ Across Mali, Burkina Faso, and Niger — the three states that in 2024 formalize
 
 ## Data sources
 
-- **ACLED (Armed Conflict Location & Event Data)** — event-level political-violence database covering protests, riots, battles, explosions, and violence against civilians, with date, location (lat/lon, admin1), perpetrator (actor1/actor2), event-type, sub-event-type, and reported fatalities for each incident. *Used for:* the dependent variable (civilian-targeted fatalities) and all perpetrator-role coding. *Filter:* Western Africa region, 2018-01-01 to 2025-04-25, all event types — yields 26,977 events across the AES core and 9,300 civilian-targeted events. Source: [ACLED Data Export Tool](https://acleddata.com/data-export-tool/), retrieved 2026-04-25.
-- **Powell-Thyne global coup dataset** (v2026.01.13) — registry of every coup attempt worldwide since 1950, coded as `successful` or `failed` with `coup_date`. *Used for:* identifying the first-coup breakpoints for Mali (2020-08-18), Burkina Faso (2022-01-23), and Niger (2023-07-26). Source: [Powell-Thyne dataset](http://www.jonathanmpowell.com/coup-detat-dataset.html).
-- **V-Dem v16 (March 2026 release)** — expert-coded democracy-indicators dataset providing the polyarchy index (`v2x_polyarchy`, electoral-democracy 0–1 scale) and a six-category regime-of-the-world classification per country-year. *Used for:* the political-context layer in Figure 4, documenting the AES core's post-coup regime trajectories. Source: [V-Dem dataset](https://v-dem.net/data/the-v-dem-dataset/), accessed via the `vdemdata` R package.
+The dependent variable and all perpetrator-role coding come from the **Armed Conflict Location & Event Data project (ACLED)**, an event-level political-violence database that records each incident's date, location (latitude, longitude, and admin1 region), perpetrators (actor1 and actor2), event-type, sub-event-type, and reported fatalities. We pulled the Western Africa region from 2018-01-01 to 2025-04-25 (all event types) via the [ACLED Data Export Tool](https://acleddata.com/data-export-tool/) on 2026-04-25, which yielded 26,977 events across the AES core, of which 9,300 are flagged as civilian-targeted.
+
+Coup-event timing comes from the **Powell-Thyne global coup dataset** (v2026.01.13), a registry of every coup attempt worldwide since 1950 that codes each as `successful` or `failed` with a `coup_date`. We use it to fix the first-coup breakpoints — Mali on 2020-08-18, Burkina Faso on 2022-01-23, and Niger on 2023-07-26 — that anchor the political-context layer of the analysis. Source: [Powell-Thyne dataset](http://www.jonathanmpowell.com/coup-detat-dataset.html).
+
+The political-context layer in Figure 4 draws on **V-Dem v16** (March 2026 release), the expert-coded democracy-indicators dataset that provides the polyarchy index (`v2x_polyarchy`, an electoral-democracy 0–1 scale) and a six-category regime-of-the-world classification per country-year. We use these to document the AES core's post-coup regime trajectories alongside the violence series. Source: [V-Dem dataset](https://v-dem.net/data/the-v-dem-dataset/), accessed via the `vdemdata` R package.
 
 ## Methodology overview
 
@@ -68,8 +70,4 @@ The analysis builds country-month panels of civilian-targeted fatalities by perp
 
 ## Author
 
-**Si Woo Kim**
-The University of Hong Kong (HKU)
-GitHub: [@siwookim1114](https://github.com/siwookim1114)
-Repository: [POLI3148-Assignment1](https://github.com/siwookim1114/POLI3148-Assignment1)
-Live report: [siwookim1114.github.io/POLI3148-Assignment1](https://siwookim1114.github.io/POLI3148-Assignment1/)
+This project is the work of **Si Woo Kim**, a student at The University of Hong Kong (HKU) submitting it for POLI3148 — *Data Science in Politics* (Spring 2026). The full source code lives at [github.com/siwookim1114/POLI3148-Assignment1](https://github.com/siwookim1114/POLI3148-Assignment1), the rendered interactive report is published at [siwookim1114.github.io/POLI3148-Assignment1](https://siwookim1114.github.io/POLI3148-Assignment1/), and the author can be reached on GitHub at [@siwookim1114](https://github.com/siwookim1114).
