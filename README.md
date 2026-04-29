@@ -3,13 +3,17 @@
 
 **POLI3148 Assignment 1 — Si Woo Kim — Spring 2026 (HKU)**
 
-Across Mali, Burkina Faso, and Niger — the three states that in 2024 formalized their breakaway as the *Alliance des États du Sahel* — the perpetrators of mass civilian killing have changed faster than the fighting itself. This project asks how, and how confidently, that turn can be read in the ACLED (Armed Conflict Location & Event Data) record between 2018 and 2025, using a breakdown of civilian-targeted fatalities by perpetrator type, a negative-binomial regression, a placebo on non-AES West Africa, and V-Dem regime trajectories.
+📊 **Live interactive report:** [siwookim1114.github.io/POLI3148-Assignment1](https://siwookim1114.github.io/POLI3148-Assignment1/)
+
+Across Mali, Burkina Faso, and Niger — the three states that in 2024 formalized their breakaway as the *Alliance des États du Sahel* — the perpetrators of mass civilian killing have changed faster than the fighting itself. This project asks how, and how confidently, that turn can be read in the ACLED (Armed Conflict Location & Event Data) record between 2018 and 2025, using a breakdown of civilian-targeted fatalities by perpetrator type, a negative-binomial regression with three robustness specifications, a placebo on non-AES West Africa, V-Dem regime trajectories, and a three-method text analysis (TF-IDF, LDA topic modeling, VADER sentiment) of ACLED's event notes.
 
 ## Findings summary
 
 - In Mali, civilian-targeted fatalities by **state forces rose 7.77× (95% CI 4.71–14.24)** and by **external forces rose 6.00× (1.95–30.07)** after Wagner's December 2021 deployment, while non-state armed groups rose only 1.19× (CI includes 1).
-- The pooled negative-binomial estimate (country dummy variables, control for total monthly event volume, linear time trend) returns an **incidence-rate ratio (IRR) of 1.74 (95% CI 1.11–2.74, p = 0.017)** on 264 country-month observations. The placebo on 13 non-AES West African countries returns IRR = 1.15 (p = 0.36, CI contains 1).
-- The Russian-arrival breakpoint (IRR = 1.74) outperforms the French-exit breakpoint (IRR = 1.48, p = 0.097), and 74.7% of the variance in monthly civilian-fatality counts lies *within* country across time rather than between countries.
+- The pooled negative-binomial estimate (country fixed effects, event-volume control, linear time trend) returns an **incidence-rate ratio (IRR) of 1.74 (95% CI 1.11–2.74, p = 0.017)** on 264 country-month observations. The result survives two robustness checks (NegativeBinomialP MLE that estimates α from the data, and cluster-robust standard errors at country level). The placebo on 13 non-AES West African countries returns IRR = 1.15 (p = 0.36, CI contains 1).
+- The Russian-arrival breakpoint (IRR = 1.74) outperforms the French-exit breakpoint (IRR = 1.48, p = 0.097), and 75% of the variance in monthly civilian-fatality counts lies *within* countries across time rather than between countries — confirming the change is regime-driven, not cross-country drift.
+- An admin1-level decomposition of Mali's events shows a southward shift: Mopti's share of civilian-targeted events drops from 0.54 to 0.31, while Ségou rises from 0.10 to 0.16 — independently corroborated by an unsupervised LDA topic model whose 'mopti-fulani' theme more than halves and 'fama-wagner-village' theme more than doubles post-Wagner.
+- Three independent text-analysis methods on ACLED's event notes (TF-IDF distinguishing words, VADER sentiment, LDA topics) converge on the same shift: post-Wagner notes name Wagner-era actors (wagner, fama, mercenaries, patrol) rather than the jihadist-faction names that distinguished pre-Wagner reporting, while sentiment stays flat (Δ = 0.02) — ruling out a reporting-volume artifact. A Random Forest classifier reaches 94% accuracy distinguishing the two phases from text alone (Logistic Regression baseline: 93%; majority-class baseline: 66%).
 
 ## Folder structure
 
@@ -20,9 +24,9 @@ Across Mali, Burkina Faso, and Niger — the three states that in 2024 formalize
 | `code/03_analysis.ipynb` | Bootstrap CIs, negative-binomial GLM, placebo, variance decomposition; writes `data/final_stats.json` and 5 figures (`fig_01_monthly_events`, `fig_02_civilian_fatalities_by_role`, `fig_03_pre_post_wagner_ratio`, `fig_04_vdem_regime`, `fig_05_mali_geographic`) |
 | `code/04_text_analysis.ipynb` | TF-IDF distinctive-word extraction, LDA topic modeling, VADER sentiment scoring with Welch t-test, Random Forest + Logistic Regression classifiers on ACLED `notes`; appends text keys to `data/final_stats.json` and writes 4 figures (`fig_06_wordfreq`, `fig_07_sentiment`, `fig_08_topics`, `pyldavis_mali`) |
 | `code/05_dashboard_figures.py` | Generates 3 dashboard/animated figures (`fig_01b_monthly_animated`, `fig_05b_mali_animated`, `fig_09_treemap`); writes self-contained HTML to `docs/figs/` |
-| `code/Z_generate_report.py` | Single-file assembler: stitches the prose blocks and 12 Plotly figures into `docs/index.html` |
+| `code/Z_generate_report.py` | Single-file assembler: stitches the prose blocks and 11 Plotly figures into `docs/index.html` |
 | `code/report_content/*.md` | Prose blocks (Lane 1 = data-scientist; Lane 2 = politics-expert) |
-| `data/acled_raw.csv` | ACLED Data Export Tool download (Western Africa, 2018-01-01 → 2025-04-25) |
+| `data/acled_raw.csv` | ACLED Data Export Tool download (Western Africa, 2018-01-01 → 2025-04-25) — **NOT bundled in repo (license + size); download your own per Step 2 below** |
 | `data/acled_clean.parquet` | AES-core cleaned panel |
 | `data/acled_clean_west_africa.parquet` | Full Western-Africa cleaned panel for placebo |
 | `data/final_stats.json` | Single source of truth for all numbers in the report |
@@ -49,7 +53,7 @@ Across Mali, Burkina Faso, and Niger — the three states that in 2024 formalize
 
 ## Methodology overview
 
-The analysis builds country-month panels of civilian-targeted fatalities by perpetrator role (state / non-state armed group / external force), computes pre/post-Russian-arrival monthly-rate ratios with a bootstrap that resamples whole months at a time (2,000 replications, `np.random.seed(42)`), fits a negative-binomial regression with country dummy variables and a control for total monthly event volume to the AES core, and replicates the same specification on 13 non-AES Western African countries as a placebo. V-Dem regime indicators provide the political-context layer, and an admin1-level geographic decomposition documents the post-Wagner de-concentration of Mali's civilian-targeted events out of Mopti and toward the Ségou–Niono corridor.
+The analysis builds country-month panels of civilian-targeted fatalities by perpetrator role (state / non-state armed group / external force), computes pre/post-Russian-arrival monthly-rate ratios with a bootstrap that resamples whole months at a time (2,000 replications, `np.random.seed(42)`), and fits a negative-binomial regression with country fixed effects, an event-volume control, and a linear time trend on the AES core. The headline IRR is reported under three specifications — fixed-α NB GLM, NegativeBinomialP MLE that estimates α from the data, and cluster-robust standard errors at country level — to confirm the result survives across reasonable specifications. The same regression is replicated on 13 non-AES Western African countries as a placebo. V-Dem regime indicators provide the political-context layer; an admin1-level geographic decomposition documents the post-Wagner de-concentration of Mali's civilian-targeted events out of Mopti and toward Ségou; a three-method text analysis (TF-IDF distinguishing words, VADER sentiment, LDA K=8 topic model) plus Random Forest + Logistic Regression classifiers triangulate the perpetrator-shift finding through ACLED's event notes.
 
 ## Limitations
 
@@ -61,3 +65,12 @@ The analysis builds country-month panels of civilian-targeted fatalities by perp
 ## AI tools used
 
 See `note_on_ai_use.md`.
+
+## Author
+
+**Si Woo Kim**
+POLI3148 — *Data Science in Politics* — Spring 2026
+The University of Hong Kong (HKU)
+GitHub: [@siwookim1114](https://github.com/siwookim1114)
+Repository: [POLI3148-Assignment1](https://github.com/siwookim1114/POLI3148-Assignment1)
+Live report: [siwookim1114.github.io/POLI3148-Assignment1](https://siwookim1114.github.io/POLI3148-Assignment1/)
