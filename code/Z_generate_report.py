@@ -370,19 +370,27 @@ def md_paragraphs_to_html(text: str) -> str:
 
 
 def embed_figure(filename: str, caption: str, optional: bool = False) -> str:
-    """Embed a Plotly self-contained HTML as an iframe-srcdoc."""
-    fig_raw = read_figure_html(filename, optional=optional)
-    if fig_raw is None:
-        return ""
-    srcdoc = html.escape(fig_raw, quote=True)
+    """Embed a Plotly self-contained HTML via iframe src (not srcdoc).
+
+    Using src= rather than srcdoc= preserves the iframe's same-origin context
+    (https://...github.io rather than `about:srcdoc`'s null origin), so figures
+    that fetch external resources at runtime (e.g., scatter_map's CARTO basemap
+    tiles for Figure 5) load correctly on GitHub Pages. The figure HTML is
+    written by the analysis notebooks to docs/figs/<filename>; the index.html
+    in docs/ references it via the relative path "figs/<filename>"."""
+    fig_path = FIGS_DIR / filename
+    if not fig_path.exists():
+        if optional:
+            return ""
+        fail(f"Required figure missing: {fig_path}")
     # Figcaption removed — Plotly figures already carry their own analytical title
     # inside the chart, and rendering the same line a second time below the iframe
     # is the most-visible defect a strict grader can spot. Keep one canonical title
     # (the Plotly one) and drop the assembler's redundant copy.
     return (
         '<figure class="plot">'
-        f'<iframe class="plot-frame" srcdoc="{srcdoc}" '
-        'loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>'
+        f'<iframe class="plot-frame" src="figs/{filename}" '
+        'loading="lazy"></iframe>'
         '</figure>'
     )
 
