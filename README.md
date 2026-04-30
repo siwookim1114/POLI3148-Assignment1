@@ -70,4 +70,4 @@ The analysis builds country-month panels of civilian-targeted fatalities by perp
 
 ## Author
 
-This project is the work of **Si Woo Kim**, a student at The University of Hong Kong (HKU) submitting it for POLI3148 — *Data Science in Politics* (Spring 2026). The full source code lives at [github.com/siwookim1114/POLI3148-Assignment1](https://github.com/siwookim1114/POLI3148-Assignment1), the rendered interactive report is published at [siwookim1114.github.io/POLI3148-Assignment1](https://siwookim1114.github.io/POLI3148-Assignment1/), and the author can be reached on GitHub at [@siwookim1114](https://github.com/siwookim1114).
+This project is the work of **Si Woo Kim**, a student at The University of Hong Kong (HKU) submitting it for POLI3148 Assignment 1. The full source code lives at [github.com/siwookim1114/POLI3148-Assignment1](https://github.com/siwookim1114/POLI3148-Assignment1), the rendered interactive report is published at [siwookim1114.github.io/POLI3148-Assignment1](https://siwookim1114.github.io/POLI3148-Assignment1/), and the author can be reached on GitHub at [@siwookim1114](https://github.com/siwookim1114).
