@@ -383,13 +383,15 @@ def embed_figure(filename: str, caption: str, optional: bool = False) -> str:
         if optional:
             return ""
         fail(f"Required figure missing: {fig_path}")
-    # Figcaption removed — Plotly figures already carry their own analytical title
-    # inside the chart, and rendering the same line a second time below the iframe
-    # is the most-visible defect a strict grader can spot. Keep one canonical title
-    # (the Plotly one) and drop the assembler's redundant copy.
+    # Cache-bust the iframe with the figure file's mtime as a version query.
+    # GitHub Pages' Fastly CDN and browsers cache .html iframes independently
+    # of the parent page, so a hard refresh on index.html alone often leaves
+    # the iframe stale. Appending ?v=<mtime> changes the URL whenever the
+    # figure file changes, forcing a fresh fetch without manual user action.
+    version = int(fig_path.stat().st_mtime)
     return (
         '<figure class="plot">'
-        f'<iframe class="plot-frame" src="figs/{filename}" '
+        f'<iframe class="plot-frame" src="figs/{filename}?v={version}" '
         'loading="lazy"></iframe>'
         '</figure>'
     )
