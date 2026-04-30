@@ -9,12 +9,12 @@ Across Mali, Burkina Faso, and Niger — the three states that formed the *Allia
 
 ## Findings summary
 
-- In Mali, civilian-targeted fatalities by **state forces rose 7.77× (95% CI 4.71–14.24)** and by **external forces rose 6.00× (1.95–30.07)** after Wagner's December 2021 deployment, while non-state armed groups rose only 1.19× (CI includes 1).
+- In Mali, civilian-targeted fatalities by **state forces rose 7.76× (95% CI 4.71–14.24)** and by **external forces rose 6.00× (1.95–30.07)** after Wagner's December 2021 deployment, while non-state armed groups rose only 1.19× (CI includes 1).
 - The pooled negative-binomial estimate (country fixed effects, event-volume control, linear time trend) returns an **incidence-rate ratio (IRR) of 1.74 (95% CI 1.11–2.74, p = 0.017)** on 264 country-month observations. The result survives two robustness checks (NegativeBinomialP MLE that estimates α from the data, and cluster-robust standard errors at country level). The placebo on 13 non-AES West African countries returns IRR = 1.15 (p = 0.36, CI contains 1).
 - The Russian-arrival breakpoint (IRR = 1.74) outperforms the French-exit breakpoint (IRR = 1.48, p = 0.097), and 75% of the variance in monthly civilian-fatality counts lies *within* countries across time rather than between countries — confirming the change is regime-driven, not cross-country drift.
 - An admin1-level decomposition of Mali's events shows a southward shift: Mopti's share of civilian-targeted events drops from 0.54 to 0.31, while Ségou rises from 0.10 to 0.16 — independently corroborated by an unsupervised LDA topic model whose 'mopti-fulani' theme more than halves and 'fama-wagner-village' theme more than doubles post-Wagner.
 - Three independent text-analysis methods on ACLED's event notes (TF-IDF distinguishing words, VADER sentiment, LDA topics) converge on the same shift: post-Wagner notes name Wagner-era actors (wagner, fama, mercenaries, patrol) rather than the jihadist-faction names that distinguished pre-Wagner reporting, while sentiment stays flat (Δ = 0.02) — ruling out a reporting-volume artifact.
-- A Random Forest classifier trained on note text alone reaches **94% accuracy** distinguishing pre- vs post-Wagner notes (Logistic Regression baseline: 93%; majority-class baseline: 66%) — confirming the textual signal is robust enough to be machine-detectable, not a cherry-picked artefact of any single text-analysis method.
+- A Random Forest classifier trained on the same notes reaches **94% accuracy** distinguishing civilian-targeted from non-civilian-targeted events from text alone (Logistic Regression: 93%; majority-class baseline: 66%) — a separate validation that ACLED's note field carries enough machine-detectable signal to support the unsupervised text findings above.
 
 ## Folder structure
 
